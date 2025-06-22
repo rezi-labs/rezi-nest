@@ -2,9 +2,12 @@
 http4k = "6.15.0.1"
 coroutines = "1.10.2"
 serialization = "1.8.1"
+lang = "1.1.0"
+kotlin = "2.1.21"
 
 [libraries]
 http4k-core = { module = "org.http4k:http4k-core", version.ref = "http4k" }
+http4k-bom = { module = "org.http4k:http4k-bom", version.ref = "http4k" }
 http4k-server-ktorcio = { module = "org.http4k:http4k-server-ktorcio", version.ref = "http4k" }
 http4k-client-apache = { module = "org.http4k:http4k-client-apache", version.ref = "http4k" }
 
@@ -12,12 +15,18 @@ http4k-client-apache = { module = "org.http4k:http4k-client-apache", version.ref
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
 
-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
+jackson = { module = "org.http4k:http4k-format-jackson", version.ref = "http4k" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "7.0.7" }
 logback = { module = "ch.qos.logback:logback-classic", version = "1.5.18" }
 
+
+lang = { module = "dev.langchain4j:langchain4j", version.ref = "lang" }
+lang-gem = { module = "dev.langchain4j:langchain4j-google-ai-gemini", version = "1.1.0-rc1" }
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.1.21" }
 jib = { id = "com.google.cloud.tools.jib", version = "3.4.5" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+

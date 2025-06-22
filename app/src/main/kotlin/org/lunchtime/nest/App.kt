@@ -6,6 +6,8 @@ package org.lunchtime.nest
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
+import org.http4k.core.Filter
+import org.http4k.core.HttpHandler
 import org.http4k.core.Method
 import org.http4k.core.Response
 import org.http4k.core.Status
@@ -15,9 +17,8 @@ import org.http4k.routing.routes
 import org.http4k.server.KtorCIO
 import org.http4k.server.ServerConfig
 import org.http4k.server.asServer
+import org.lunchtime.nest.endpoints.TasksEndpoint
 import kotlin.time.measureTimedValue
-import org.http4k.core.Filter
-import org.http4k.core.HttpHandler
 
 private const val DEFAULT_PORT = 9998
 val serverPort by lazy { System.getenv("SERVER_PORT")?.toInt() ?: DEFAULT_PORT }
@@ -28,8 +29,9 @@ suspend fun main() {
     coroutineScope {
         val runtime = ServerRuntime.KtorCIO
         log.info { "Server runtime: ${runtime.name}" }
+        val appConfig = AppConfig.fromEnv()
 
-        val server = buildApp().asServer(runtime.config(serverPort)).start()
+        val server = buildApp(appConfig).asServer(runtime.config(serverPort)).start()
 
         log.info { "Listening on http://0.0.0.0:$serverPort" }
 
@@ -39,15 +41,24 @@ suspend fun main() {
     }
 }
 
+
 @Suppress("LongMethod")
-private fun buildApp(): RoutingHttpHandler =
-    routes(
+private fun buildApp(
+    config: AppConfig
+): RoutingHttpHandler {
+    val keyFilter = ApiKeyFilter(config.apiKey)
+    return routes(
         routes(
             "healthz" bind Method.GET to { Response(Status.NO_CONTENT) },
-        ).withBasePath("api")
+            routes(
+                "task" bind Method.POST to TasksEndpoint(config),
+            ).withFilter(keyFilter)
+
+        ).withBasePath("api"),
     ).withFilter(
-       ResponseLogger
+        ResponseLogger,
     )
+}
 
 
 private enum class ServerRuntime(
@@ -59,16 +70,34 @@ private enum class ServerRuntime(
 object ResponseLogger : Filter {
     private val log = KotlinLogging.logger { }
 
-    override fun invoke(next: HttpHandler): HttpHandler = { req ->
-        val (resp, duration) = measureTimedValue { next(req) }
-        val message = { "${req.method} ${req.uri} -> ${resp.status} $duration" }
-        if (resp.status.let { it.redirection || it.successful || it.informational }) {
-            log.debug(message)
-        } else if (resp.status.clientError) {
-            log.warn(message)
-        } else {
-            log.error(message)
+    override fun invoke(next: HttpHandler): HttpHandler =
+        { req ->
+            val (resp, duration) = measureTimedValue { next(req) }
+            val message = { "${req.method} ${req.uri} -> ${resp.status} $duration" }
+            if (resp.status.let { it.redirection || it.successful || it.informational }) {
+                log.debug(message)
+            } else if (resp.status.clientError) {
+                log.warn(message)
+            } else {
+                log.error(message)
+            }
+            resp
         }
-        resp
-    }
+}
+
+class ApiKeyFilter(private val apiKey: String) : Filter {
+    private val log = KotlinLogging.logger { }
+
+    override fun invoke(next: HttpHandler): HttpHandler =
+        { req ->
+            val fromR = req.header("api-key")
+            val fromE = apiKey
+
+            if (fromR == fromE){
+                next(req)
+            } else{
+                log.warn { "Non authorized try: ${req.method} ${req.uri}" }
+                Response(Status.UNAUTHORIZED)
+            }
+        }
 }

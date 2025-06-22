@@ -22,7 +22,11 @@ repositories {
 
 dependencies {
     implementation(libs.http4k.core)
+    implementation(libs.http4k.bom)
+    implementation(libs.jackson)
     implementation(libs.http4k.client.apache)
+    implementation(libs.lang)
+    implementation(libs.lang.gem)
 
     implementation(libs.http4k.server.ktorcio)
 
