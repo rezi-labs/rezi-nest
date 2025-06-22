@@ -39,7 +39,7 @@ jobs:
           username: optravis-bot
           password: ${{ secrets.GLOBAL_GITHUB_TOKEN }}
 
-      - run: just tools verify
+      - run: just ci verify
 
   # Prepare a release PR or release
   release:
