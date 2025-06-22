@@ -15,6 +15,9 @@ import org.http4k.routing.routes
 import org.http4k.server.KtorCIO
 import org.http4k.server.ServerConfig
 import org.http4k.server.asServer
+import kotlin.time.measureTimedValue
+import org.http4k.core.Filter
+import org.http4k.core.HttpHandler
 
 private const val DEFAULT_PORT = 9998
 val serverPort by lazy { System.getenv("SERVER_PORT")?.toInt() ?: DEFAULT_PORT }
@@ -39,11 +42,33 @@ suspend fun main() {
 @Suppress("LongMethod")
 private fun buildApp(): RoutingHttpHandler =
     routes(
-        "healthz" bind Method.GET to { Response(Status.NO_CONTENT) },
-    ).withBasePath("api")
+        routes(
+            "healthz" bind Method.GET to { Response(Status.NO_CONTENT) },
+        ).withBasePath("api")
+    ).withFilter(
+       ResponseLogger
+    )
+
 
 private enum class ServerRuntime(
     val config: (port: Int) -> ServerConfig,
 ) {
     KtorCIO(::KtorCIO),
+}
+
+object ResponseLogger : Filter {
+    private val log = KotlinLogging.logger { }
+
+    override fun invoke(next: HttpHandler): HttpHandler = { req ->
+        val (resp, duration) = measureTimedValue { next(req) }
+        val message = { "${req.method} ${req.uri} -> ${resp.status} $duration" }
+        if (resp.status.let { it.redirection || it.successful || it.informational }) {
+            log.debug(message)
+        } else if (resp.status.clientError) {
+            log.warn(message)
+        } else {
+            log.error(message)
+        }
+        resp
+    }
 }

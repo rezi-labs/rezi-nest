@@ -24,8 +24,9 @@ dependencies {
     implementation(libs.http4k.core)
     implementation(libs.http4k.client.apache)
 
-    // HTTP server runtimes
     implementation(libs.http4k.server.ktorcio)
+
+    runtimeOnly(libs.logback)
     implementation(libs.kotlin.logging)
 }
 
@@ -46,7 +47,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.AppKt"
+    mainClass = "org.lunchtime.nest.AppKt"
 }
 
 allprojects {
