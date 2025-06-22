@@ -2,7 +2,8 @@ services:
   nest:
     image: ghcr.io/lunchtimecode/nest
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       SERVER_PORT: 9998
       API_KEY: "very-secure"
