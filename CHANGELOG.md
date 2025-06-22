@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/LunchTimeCode/nest/compare/v1.0.0...v1.0.1) (2025-06-22)
+
+
+### Bug Fixes
+
+* publish ([d77d069](https://github.com/LunchTimeCode/nest/commit/d77d0692f07e20f337b30054b123de63bd030d5a))
+
 ## 1.0.0 (2025-06-22)
 
 
