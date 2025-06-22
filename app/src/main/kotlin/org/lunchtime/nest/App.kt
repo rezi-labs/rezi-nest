@@ -41,25 +41,20 @@ suspend fun main() {
     }
 }
 
-
 @Suppress("LongMethod")
-private fun buildApp(
-    config: AppConfig
-): RoutingHttpHandler {
+private fun buildApp(config: AppConfig): RoutingHttpHandler {
     val keyFilter = ApiKeyFilter(config.apiKey)
     return routes(
         routes(
             "healthz" bind Method.GET to { Response(Status.NO_CONTENT) },
             routes(
                 "task" bind Method.POST to TasksEndpoint(config),
-            ).withFilter(keyFilter)
-
+            ).withFilter(keyFilter),
         ).withBasePath("api"),
     ).withFilter(
         ResponseLogger,
     )
 }
-
 
 private enum class ServerRuntime(
     val config: (port: Int) -> ServerConfig,
@@ -85,7 +80,9 @@ object ResponseLogger : Filter {
         }
 }
 
-class ApiKeyFilter(private val apiKey: String) : Filter {
+class ApiKeyFilter(
+    private val apiKey: String,
+) : Filter {
     private val log = KotlinLogging.logger { }
 
     override fun invoke(next: HttpHandler): HttpHandler =
@@ -93,9 +90,9 @@ class ApiKeyFilter(private val apiKey: String) : Filter {
             val fromR = req.header("api-key")
             val fromE = apiKey
 
-            if (fromR == fromE){
+            if (fromR == fromE) {
                 next(req)
-            } else{
+            } else {
                 log.warn { "Non authorized try: ${req.method} ${req.uri}" }
                 Response(Status.UNAUTHORIZED)
             }
