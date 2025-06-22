@@ -1,0 +1,8 @@
+services:
+  nest:
+    image: ghcr.io/lunchtimecode/nest
+    environment:
+      SERVER_PORT: 9998
+      AUTH_SECRET: "very-secure"
+    ports:
+      - "9998:9998"
