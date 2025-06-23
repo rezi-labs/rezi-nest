@@ -26,7 +26,7 @@ lang = { module = "dev.langchain4j:langchain4j", version.ref = "lang" }
 lang-gem = { module = "dev.langchain4j:langchain4j-google-ai-gemini", version = "1.1.0-rc1" }
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.1.21" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.2.0" }
 jib = { id = "com.google.cloud.tools.jib", version = "3.4.5" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
