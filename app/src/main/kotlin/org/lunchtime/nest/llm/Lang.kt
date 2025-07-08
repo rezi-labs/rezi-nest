@@ -42,3 +42,25 @@ fun gen(
 
     return gemini.chat(prompt)
 }
+
+fun chat(
+    prompt: String,
+    gemKey: String?,
+): String? {
+    val gem: GoogleAiGeminiChatModel.GoogleAiGeminiChatModelBuilder? =
+        gemKey?.let {
+            GoogleAiGeminiChatModel
+                .builder()
+                .apiKey(it)
+        }
+
+    if (gem == null) return null
+
+    val gemini: ChatModel =
+        gem
+            .modelName("gemini-2.0-flash-lite")
+            .supportedCapabilities(Capability.RESPONSE_FORMAT_JSON_SCHEMA)
+            .build()
+
+    return gemini.chat(prompt)
+}
