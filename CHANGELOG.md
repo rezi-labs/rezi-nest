@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/LunchTimeCode/nest/compare/v1.0.1...v1.1.0) (2025-07-08)
+
+
+### Features
+
+* chat endpoint ([2309f7e](https://github.com/LunchTimeCode/nest/commit/2309f7ed4bfb8b21d88db8aa58a99e8ffde4a3a1))
+
 ## [1.0.1](https://github.com/LunchTimeCode/nest/compare/v1.0.0...v1.0.1) (2025-06-22)
 
 
