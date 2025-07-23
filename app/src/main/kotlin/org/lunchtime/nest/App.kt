@@ -17,6 +17,7 @@ import org.http4k.routing.routes
 import org.http4k.server.KtorCIO
 import org.http4k.server.ServerConfig
 import org.http4k.server.asServer
+import org.lunchtime.nest.endpoints.ActionDecisionEndpoint
 import org.lunchtime.nest.endpoints.ChatEndpoint
 import org.lunchtime.nest.endpoints.TasksEndpoint
 import kotlin.time.measureTimedValue
@@ -50,6 +51,7 @@ private fun buildApp(config: AppConfig): RoutingHttpHandler {
             "healthz" bind Method.GET to { Response(Status.NO_CONTENT) },
             routes(
                 "task" bind Method.POST to TasksEndpoint(config),
+                "actions" bind Method.POST to ActionDecisionEndpoint(config),
                 "chat" bind Method.POST to ChatEndpoint(config),
             ).withFilter(keyFilter),
         ).withBasePath("api"),
