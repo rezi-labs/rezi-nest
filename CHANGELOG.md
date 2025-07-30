@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/LunchTimeCode/nest/compare/v1.1.0...v1.2.0) (2025-07-23)
+
+
+### Features
+
+* actions endpoint ([7e6c150](https://github.com/LunchTimeCode/nest/commit/7e6c150f57463b7675b99434e41b96ee395a1670))
+
 ## [1.1.0](https://github.com/LunchTimeCode/nest/compare/v1.0.1...v1.1.0) (2025-07-08)
 
 
