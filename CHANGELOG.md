@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.1](https://github.com/rezi-labs/rezi-nest/compare/v1.2.0...v1.2.1) (2025-09-22)
+
+
+### Bug Fixes
+
+* deploy ([1c46405](https://github.com/rezi-labs/rezi-nest/commit/1c46405da1cb8575a0131090968b5e418cf65501))
+* deploy ([e769e67](https://github.com/rezi-labs/rezi-nest/commit/e769e671e9e9e76b347b807f748fc391389bf248))
+* deploy ([95c872e](https://github.com/rezi-labs/rezi-nest/commit/95c872e97d8de3c85672495f87f5c90222349dab))
+
 ## [1.2.0](https://github.com/LunchTimeCode/nest/compare/v1.1.0...v1.2.0) (2025-07-23)
 
 
