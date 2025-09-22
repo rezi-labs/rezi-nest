@@ -1,6 +1,6 @@
 services:
   nest:
-    image: ghcr.io/lunchtimecode/nest
+    image: ghcr.io/rezi-labs/rezi-nest
     env_file:
       - path: .env
         required: false
