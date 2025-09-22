@@ -1,5 +1,5 @@
 import? 'tests/hurl.just'
-image_name := "ghcr.io/lunchtimecode/nest"
+image_name := "ghcr.io/rezi-labs/rezi-nest"
 set dotenv-load
 
 ci:
